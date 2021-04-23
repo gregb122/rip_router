@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <errno.h>
 
-int udp_client()
+int broadcast()
 {
 	int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sockfd < 0) {
