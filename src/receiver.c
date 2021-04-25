@@ -6,12 +6,11 @@
 #include <unistd.h>
 #include <errno.h>
 
-int receive(int sockfd)
+int receive(int sockfd, u_int8_t buffer[], char sender_ip_str[])
 {
 
 	struct sockaddr_in 	sender;	
 	socklen_t 			sender_len = sizeof(sender);
-	u_int8_t 			buffer[IP_MAXPACKET+1];
 
 	
 	ssize_t datagram_len = recvfrom (sockfd, buffer, IP_MAXPACKET, 0, (struct sockaddr*)&sender, &sender_len);
@@ -43,6 +42,9 @@ int listen_for_packets(int _sockfd, int time){
 		fd_set descriptors;
 		FD_ZERO (&descriptors);
 		FD_SET (_sockfd, &descriptors);
+		u_int8_t buffer[IP_MAXPACKET+1];
+		char sender_ip_str[20];
+
 
 		struct timeval tv = {
 			tv.tv_sec = time,
@@ -57,5 +59,8 @@ int listen_for_packets(int _sockfd, int time){
 		if(ready == 0){
 			return 0;
 		}
+
+		return receive(_sockfd, buffer, sender_ip_str);
+
 }
 
