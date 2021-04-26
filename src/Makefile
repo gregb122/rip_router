@@ -6,8 +6,10 @@ traceroute: $(obj)
 	gcc $(CFLAGS) -c -o router.o router.c
 	gcc $(CFLAGS) -c -o record.o record.c
 	gcc $(CFLAGS) -c -o table.o table.c
-	gcc $(CFLAGS) -c -o connect.o connect.c
-	gcc $(CFLAGS) -o router record.o table.o connect.o router.o
+	gcc $(CFLAGS) -c -o receiver.o receiver.c
+	gcc $(CFLAGS) -c -o broadcaster.o broadcaster.c
+	gcc $(CFLAGS) -c -o helpers.o helpers.c
+	gcc $(CFLAGS) -o router record.o table.o receiver.o broadcaster.o helpers.o router.o
 
 .PHONY: clean distclean
 clean:

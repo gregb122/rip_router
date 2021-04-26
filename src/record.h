@@ -1,6 +1,9 @@
 #include <stdint.h>
 #include <arpa/inet.h>
 #include "helpers.h"
+#include "broadcaster.h"
+#include "receiver.h"
+
 
 typedef struct in_addr addr;
 

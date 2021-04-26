@@ -1,3 +1,5 @@
+//Grzegorz Bielecki 288388
+
 #include "record.h"
 
 typedef struct {

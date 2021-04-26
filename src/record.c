@@ -1,3 +1,5 @@
+//Grzegorz Bielecki 288388
+
 #include <arpa/inet.h>
 
 #include "record.h"
@@ -6,6 +8,7 @@ const int MAXWHENINF = 64;
 
 int construct_record_from_str(char *str, record rec){
     //TODO string to record
+    return 0;
 }
 int construct_record(int _conn_type, addr _via_router, addr _network_ip, int _mask_len, int _distance, int _reachable, record *rec_out){
     rec_out->conn_type = _conn_type;
@@ -36,11 +39,11 @@ int set_distance(record *rec, int _distance){
 int display_record(record *rec){
     char network_str[16];
     char via_router_str[16];
-
+    
     inet_ntop(AF_INET, 
-              rec->network_ip_with_mask.network_addr.s_addr & to_mask(rec->network_ip_with_mask.mask_len), 
+              &(rec->network_ip_with_mask.network_addr.s_addr), 
               network_str, 16);
-    inet_ntop(AF_INET, rec->network_ip_with_mask.network_addr.s_addr, via_router_str, 16);
+    inet_ntop(AF_INET, &(rec->via_router_addr.s_addr), via_router_str, 16);
 
     printf("%s/%d ", network_str, rec->network_ip_with_mask.mask_len);
     if(!rec->reachable){
@@ -52,7 +55,9 @@ int display_record(record *rec){
     if(!rec->conn_type){
         printf("connected directly\n");
     } else{
-        printf("via %s\n", via_router_str)
+        printf("via %s\n", via_router_str);
     }
+    return 0;
 }
+
 int broadcast_record(record *rec); //TODO use broadcaster here

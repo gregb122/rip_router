@@ -1,18 +1,20 @@
-#include <netinet/ip.h>
-#include <arpa/inet.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <errno.h>
+//Grzegorz Bielecki 288388
+
+#include "broadcaster.h"
 
 int broadcast()
 {
 	int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+
 	if (sockfd < 0) {
 		fprintf(stderr, "socket error: %s\n", strerror(errno)); 
 		return EXIT_FAILURE;
 	}
+
+	int broadcastPermission = 1;
+	setsockopt (sockfd, SOL_SOCKET, SO_BROADCAST,
+	(void *)&broadcastPermission,
+	sizeof(broadcastPermission)); 
 
 	struct sockaddr_in server_address;
 	bzero (&server_address, sizeof(server_address));

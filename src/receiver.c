@@ -1,10 +1,29 @@
-#include <netinet/ip.h>
-#include <arpa/inet.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <errno.h>
+//Grzegorz Bielecki 288388
+
+#include "receiver.h"
+
+int create_socket(){
+    int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+	if (sockfd < 0) {
+		fprintf(stderr, "socket error: %s\n", strerror(errno)); 
+		return EXIT_FAILURE;
+	}
+
+	struct sockaddr_in server_address;
+	bzero (&server_address, sizeof(server_address));
+	server_address.sin_family      = AF_INET;
+	server_address.sin_port        = htons(54321);
+	server_address.sin_addr.s_addr = htonl(INADDR_ANY);
+	if (bind (sockfd, (struct sockaddr*)&server_address, sizeof(server_address)) < 0) {
+		fprintf(stderr, "bind error: %s\n", strerror(errno)); 
+		return EXIT_FAILURE;
+	}
+    return sockfd;
+}
+
+int close_socket(int sockfd){
+    return close(sockfd);
+}
 
 int receive(int sockfd, u_int8_t buffer[], char sender_ip_str[])
 {
@@ -19,8 +38,7 @@ int receive(int sockfd, u_int8_t buffer[], char sender_ip_str[])
 		return EXIT_FAILURE;
 	}
 
-	char sender_ip_str[20]; 
-	inet_ntop(AF_INET, &(sender.sin_addr), sender_ip_str, sizeof(sender_ip_str));
+	inet_ntop(AF_INET, &(sender.sin_addr), sender_ip_str, 16);
 	printf ("Received UDP packet from IP address: %s, port: %d\n", sender_ip_str, ntohs(sender.sin_port));
 
 	buffer[datagram_len] = 0;
@@ -45,7 +63,6 @@ int listen_for_packets(int _sockfd, int time){
 		u_int8_t buffer[IP_MAXPACKET+1];
 		char sender_ip_str[20];
 
-
 		struct timeval tv = {
 			tv.tv_sec = time,
 			tv.tv_usec = 0
@@ -61,6 +78,5 @@ int listen_for_packets(int _sockfd, int time){
 		}
 
 		return receive(_sockfd, buffer, sender_ip_str);
-
 }
 
