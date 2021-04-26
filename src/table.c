@@ -3,8 +3,8 @@ int is_address_in(record *record, addr addess){
     return (record->network_ip_with_mask.network_addr.s_addr 
             == (addess.s_addr & record->network_ip_with_mask.netmask));
 }
-
-int create_table(routers_table *table, int _size){
+/* args 1 size of table list, 2 out for table */
+int construct_table(int _size, routers_table *table){
     table->record_tab = malloc(_size * sizeof(record));
     table->count = 0;
     table->max_s = _size;

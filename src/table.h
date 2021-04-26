@@ -6,7 +6,7 @@ typedef struct {
     int      max_s;
 } routers_table;
 
-int create_table(routers_table *table, int size);
+int create_table(int size, routers_table *table_out);
 int delete_table(routers_table *table);
 int add_record(routers_table *table, record *r);
 int rm_record(routers_table *table, int idx);
