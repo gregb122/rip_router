@@ -1,7 +1,7 @@
 #include "table.h"
 int is_address_in(record *record, addr addess){
     return (record->network_ip_with_mask.network_addr.s_addr 
-            == (addess.s_addr & record->network_ip_with_mask.netmask));
+            == (addess.s_addr & to_mask(record->network_ip_with_mask.mask_len)));
 }
 /* args 1 size of table list, 2 out for table */
 int construct_table(int _size, routers_table *table){
@@ -31,7 +31,7 @@ int rm_record(routers_table *table, int idx){
     else 1;//when idx out of range
 }
 int find_network_record(routers_table *table, addr _network_ip){
-    for(int i; i < table->count; i++){
+    for(int i = 0; i < table->count; i++){
         if(is_address_in(&table->record_tab[i], _network_ip)){
             return i;
         }
