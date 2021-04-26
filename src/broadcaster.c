@@ -20,7 +20,7 @@ int broadcast()
 	bzero (&server_address, sizeof(server_address));
 	server_address.sin_family      = AF_INET;
 	server_address.sin_port        = htons(32345);
-	inet_pton(AF_INET, "127.0.0.1", &server_address.sin_addr);
+	inet_pton(AF_INET, "255.255.255.255", &server_address.sin_addr);
 
 	char* message = "Hello server!";
 	ssize_t message_len = strlen(message);

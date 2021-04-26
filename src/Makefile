@@ -16,4 +16,4 @@ clean:
 	rm -f *.o
 
 distclean:
-	rm  -f traceroute *.o
+	rm  -f router *.o

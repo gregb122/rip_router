@@ -75,7 +75,7 @@ int listen_for_packets(int _sockfd, int time){
 		}
 		if(ready == 0){
 			return 0;
-		}
+}
 
 		return receive(_sockfd, buffer, sender_ip_str);
 }
