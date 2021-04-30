@@ -4,34 +4,42 @@
 
 #include "table.h"
 
-const SENDAFTER = 5;
+int prepare_server(char _sender_ip_str[]){
+	memset(_sender_ip_str, 0, sizeof(char) * 16);
+	return create_socket();
+}
 
-int router(int argc, char* argv){
-	struct timeval  tv1, tv2;
-	gettimeofday(&tv1, NULL);
-	/* stuff to do! */
+void close_server(int sockfd){
+	close_socket(sockfd);
+}
+
+int router(){
+	int sendafter = 5;
+	u_int8_t _buffer[IP_MAXPACKET+1];
+	char _sender_ip_str[16];
+
+	int sockfd = prepare_server(_sender_ip_str);
+	struct timespec tv1, tv2;
+
+	clock_gettime(CLOCK_REALTIME, &tv1);
 	for(;;){
-		printf("Idę nasłuchiwać :0\n");
-		sleep(4); //TODO here will be receiver waiting for packets
-		gettimeofday(&tv2, NULL);	
-		double time = (double) (tv2.tv_usec - tv1.tv_usec) / 1000000 +
+		clock_gettime(CLOCK_REALTIME, &tv2);	
+		double time = (double) (tv2.tv_sec - tv1.tv_sec) / 1000000 +
          			  (double) (tv2.tv_sec - tv1.tv_sec);
-		printf ("Total time = %f seconds\n", time);		
-		if(time > SENDAFTER){
+		if(time > sendafter){
 			printf("A tu sobie wyślę hehe! :0\n");
 			broadcast();
-			gettimeofday(&tv1, NULL);
+			clock_gettime(CLOCK_REALTIME, &tv1);
 		}
+		printf("nasłuchuję!!!\n");
+		listen_for_packets(sockfd, sendafter, _buffer, _sender_ip_str);
 	}
+	close_server(sockfd);
     return EXIT_FAILURE;
 }
 
-int main(int argc, char** argv){
-	printf("Tu się zaczynam");
-    if (argc < 2){
-        fprintf(stderr, "Get %d arguments, minimum is one arg\n", argc - 1);
-        exit(EXIT_FAILURE);
-    }
-	router(argc, argv);
+int main() {
+	printf("Halo gdzie się schowałeś segfault");
+	router();
 	return 0;
 }

@@ -2,8 +2,7 @@
 
 #include "broadcaster.h"
 
-int broadcast()
-{
+int broadcast() {
 	int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 
 	if (sockfd < 0) {
@@ -19,7 +18,7 @@ int broadcast()
 	struct sockaddr_in server_address;
 	bzero (&server_address, sizeof(server_address));
 	server_address.sin_family      = AF_INET;
-	server_address.sin_port        = htons(32345);
+	server_address.sin_port        = htons(54321);
 	inet_pton(AF_INET, "255.255.255.255", &server_address.sin_addr);
 
 	char* message = "Hello server!";
@@ -28,8 +27,6 @@ int broadcast()
 		fprintf(stderr, "sendto error: %s\n", strerror(errno)); 
 		return EXIT_FAILURE;		
 	}
-
 	close (sockfd);
 	return EXIT_SUCCESS;
 }
-	

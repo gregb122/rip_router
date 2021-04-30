@@ -9,11 +9,12 @@ traceroute: $(obj)
 	gcc $(CFLAGS) -c -o receiver.o receiver.c
 	gcc $(CFLAGS) -c -o broadcaster.o broadcaster.c
 	gcc $(CFLAGS) -c -o helpers.o helpers.c
-	gcc $(CFLAGS) -o router record.o table.o receiver.o broadcaster.o helpers.o router.o
+	gcc $(CFLAGS) -o router helpers.o receiver.o broadcaster.o record.o table.o router.o
+	cp router out/
 
 .PHONY: clean distclean
 clean:
 	rm -f *.o
 
 distclean:
-	rm  -f router *.o
+	rm  -f router out/* *.o
