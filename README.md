@@ -1,5 +1,7 @@
 # rip_router
 
+## Work in progress, probably don't work yet
+
 ## Router table, brodcasting entries and updating them based on informations from other routers.
 
 ### how to compile:
